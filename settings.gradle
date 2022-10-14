@@ -1,1 +1,3 @@
 rootProject.name = 'AsgelLogicSignalManip'
+include ":AsgelLogicCore"
+project(":AsgelLogicCore").projectDir = new File("../AsgelLogicCore/")
