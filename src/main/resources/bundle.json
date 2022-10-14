@@ -1,0 +1,6 @@
+{
+"name":"Asgel Logic Signal Manip",
+"id":"asgellogicsignalmanip",
+"desc":"Signal Manipulation Bundle for Asgel's Logic Simulator",
+"main":"asgel.signalmanip"
+}
