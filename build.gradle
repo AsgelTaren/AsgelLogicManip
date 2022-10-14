@@ -10,3 +10,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     api project(":AsgelLogicCore")
 }
+
+task copyJar(type: Copy){
+	from jar
+	into "${System.env.APPDATA}/AsgelLogicSim/bundles"
+	rename("AsgelLogicSignalManip.jar","asgellogicsignalmanip.jar")
+}
+
+jar.finalizedBy copyJar
