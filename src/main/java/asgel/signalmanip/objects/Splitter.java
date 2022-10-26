@@ -1,5 +1,6 @@
 package asgel.signalmanip.objects;
 
+import asgel.core.gfx.Direction;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
@@ -8,9 +9,9 @@ public class Splitter extends ModelOBJ {
 
 	protected Splitter(int x, int y, int outputs, int size) {
 		super("Splitter", "Spl", x, y, 48, 16 * outputs + 16, outputs + 1);
-		pins[0] = new Pin(this, 0, 0.5f, size, "IN", true);
+		pins[0] = new Pin(this, Direction.WEST, size, "IN", true);
 		for (int i = 0; i < outputs; i++) {
-			pins[i + 1] = new Pin(this, 1f, 0, size, "OUT " + i, false).setY(i, outputs);
+			pins[i + 1] = new Pin(this, Direction.EAST, size, "OUT " + i, false);
 		}
 	}
 

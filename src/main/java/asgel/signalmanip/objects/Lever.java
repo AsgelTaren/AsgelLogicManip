@@ -2,6 +2,7 @@ package asgel.signalmanip.objects;
 
 import java.awt.Color;
 
+import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
 import asgel.core.gfx.Renderer;
 import asgel.core.model.Clickable;
@@ -10,9 +11,9 @@ import asgel.core.model.Pin;
 
 public class Lever extends ModelOBJ implements Clickable {
 
-	public Lever(int x, int y) {
-		super("Lever", "L", x, y, 32, 32, 1);
-		pins[0] = new Pin(this, 1, 0.5f, 1, "OUT", false);
+	public Lever(Point p) {
+		super("Lever", "L", (int) p.x, (int) p.y, 32, 32, 1);
+		pins[0] = new Pin(this, Direction.EAST, 1, "OUT", false);
 	}
 
 	@Override
