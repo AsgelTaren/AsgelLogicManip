@@ -37,6 +37,12 @@ public class Lever extends ModelOBJ implements Clickable {
 
 		for (Pin p : pins) {
 			p.render(renderer, highPin, anchor);
+
+			if (highOBJ == this || highPin == p) {
+				Point loc = p.getRotation().asVec(25).add(p.getPos());
+				renderer.drawCenteredString(p.toString(), (int) loc.x, (int) loc.y,
+						highPin == p ? Color.red : Color.BLACK);
+			}
 		}
 		renderer.pop();
 	}

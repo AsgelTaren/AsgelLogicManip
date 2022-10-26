@@ -12,6 +12,7 @@ import asgel.core.model.ModelOBJ;
 import asgel.core.model.ModelTab;
 import asgel.core.model.IParametersRequester;
 import asgel.signalmanip.objects.Lever;
+import asgel.signalmanip.objects.Splitter;
 
 public class Bundle implements BundleLoader {
 
@@ -24,6 +25,8 @@ public class Bundle implements BundleLoader {
 		// Register objects
 		registry.registerObject("lever", "Lever", "signal_manip", p -> new Lever((int) p.x, (int) p.y),
 				(Function<JsonObject, ModelOBJ>) null);
+		registry.registerObject("splitter", "Splitter", "signal_manip",
+				p -> Splitter.askFor((int) p.x, (int) p.y, requester), null);
 	}
 
 }
