@@ -14,6 +14,7 @@ import asgel.core.model.ModelOBJ;
 import asgel.core.model.ModelTab;
 import asgel.signalmanip.objects.InputNode;
 import asgel.signalmanip.objects.Lever;
+import asgel.signalmanip.objects.OutputNode;
 import asgel.signalmanip.objects.Splitter;
 
 public class Bundle implements BundleLoader {
@@ -23,7 +24,8 @@ public class Bundle implements BundleLoader {
 		// Regsiter tabs
 		registry.registerTab(new ModelTab("signal_manip", "Signal Manip")
 				.setIcon(Utils.loadIcon(res.resolveRessource("logo.png"), 16)).setColor(new Color(190, 3, 252)));
-		registry.registerTab(new ModelTab("model_box", "Model Box").setColor(new Color(252, 235, 3)));
+		registry.registerTab(new ModelTab("model_box", "Model Box").setColor(new Color(252, 235, 3))
+				.setIcon(Utils.loadIcon(res.resolveRessource("box.png"), 16)));
 
 		// Register objects
 		registry.registerObject("lever", "Lever", "signal_manip", p -> new Lever(p),
@@ -31,6 +33,7 @@ public class Bundle implements BundleLoader {
 		registry.registerObject("splitter", "Splitter", "signal_manip",
 				p -> Splitter.askFor((int) p.x, (int) p.y, requester), null);
 		registry.registerObject("inputnode", "Input Node", "model_box", p -> InputNode.askFor(p, requester), null);
+		registry.registerObject("outputnod", "Output Node", "model_box", p -> OutputNode.askFor(p, requester), null);
 	}
 
 }

@@ -1,6 +1,14 @@
 package asgel.signalmanip.objects;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.text.NumberFormat;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.text.NumberFormatter;
 
 import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
@@ -33,9 +41,33 @@ public class InputNode extends ModelOBJ {
 				return "Model Box";
 			}
 		};
-		// res.setBorder(BorderFactory.createTitledBorder("ID and position"));
+		res.setBorder(BorderFactory.createTitledBorder("ID"));
+		res.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 0.2;
+		res.add(new JLabel("ID"), gbc);
+
+		NumberFormat format = NumberFormat.getInstance();
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(0);
+		formatter.setAllowsInvalid(false);
+
+		JFormattedTextField field = new JFormattedTextField(formatter);
+		field.setText(id + "");
+		field.addActionListener(e -> {
+			this.id = Integer.parseInt(field.getText());
+		});
+		gbc.gridx = 1;
+		gbc.weightx = 0.8;
+		res.add(field, gbc);
 
 		return new JPanel[] { res };
+	}
+
+	public int getID() {
+		return id;
 	}
 
 	public static InputNode askFor(Point p, IParametersRequester req) {
