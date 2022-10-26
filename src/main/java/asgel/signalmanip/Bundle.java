@@ -10,12 +10,13 @@ import asgel.core.bundle.Utils;
 import asgel.core.model.BundleRegistry;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.ModelTab;
-import asgel.signalmanip.objects.*;
+import asgel.core.model.IParametersRequester;
+import asgel.signalmanip.objects.Lever;
 
 public class Bundle implements BundleLoader {
 
 	@Override
-	public void loadBundle(BundleRegistry registry, RessourceManager res) {
+	public void loadBundle(BundleRegistry registry, RessourceManager res, IParametersRequester requester) {
 		// Regsiter tabs
 		registry.registerTab(new ModelTab("signal_manip", "Signal Manip")
 				.setIcon(Utils.loadIcon(res.resolveRessource("logo.png"), 16)));
