@@ -38,8 +38,10 @@ public class BiggerLever extends ModelOBJ implements Clickable {
 		renderer.push();
 		renderer.translate(x, y);
 		renderer.applyRot(rot, new Point(width >> 1, height >> 1));
-		renderer.fillRect(0, 0, width, height, Color.GRAY);
-		renderer.drawRect(0, 0, width, height, highOBJ == this ? Color.GREEN : Color.BLACK);
+		renderer.fillRoundedRect(0, 0, width, height, 20, Color.GRAY);
+		if (highOBJ == this) {
+			renderer.drawRoundedRect(0, 0, width, height, 20, Color.GREEN);
+		}
 
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[0].length; j++) {
