@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.NumberFormatter;
 
+import com.google.gson.JsonObject;
+
 import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
 import asgel.core.model.IParametersRequester;
@@ -22,7 +24,7 @@ public class OutputNode extends ModelOBJ {
 
 	protected OutputNode(int x, int y, int size, int id) {
 		super("OUT " + id, "OUT " + id, x, y, 48, 48, 1);
-		pins[0] = new Pin(this, Direction.WEST, size, "OUT " + id, true);
+		pins[0] = new Pin(this, Direction.EAST, size, "OUT " + id, true);
 		this.id = id;
 	}
 
@@ -75,6 +77,17 @@ public class OutputNode extends ModelOBJ {
 		if (params == null)
 			return null;
 		return new OutputNode((int) p.x, (int) p.y, params[0], params[1]);
+	}
+
+	@Override
+	public void toJsonInternal(JsonObject json) {
+		json.addProperty("size", pins[0].getSize());
+		json.addProperty("id", id);
+	}
+
+	public static OutputNode fromJson(JsonObject json) {
+		return new OutputNode(json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("size").getAsInt(),
+				json.get("id").getAsInt());
 	}
 
 }

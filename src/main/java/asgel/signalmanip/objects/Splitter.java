@@ -1,5 +1,7 @@
 package asgel.signalmanip.objects;
 
+import com.google.gson.JsonObject;
+
 import asgel.core.gfx.Direction;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelOBJ;
@@ -24,11 +26,23 @@ public class Splitter extends ModelOBJ {
 		}
 	}
 
+	@Override
+	public void toJsonInternal(JsonObject json) {
+		json.addProperty("outputs", pins.length - 1);
+		json.addProperty("size", pins[0].getSize());
+	}
+
 	public static Splitter askFor(int x, int y, IParametersRequester req) {
 		int[] params = req.getParametersAsInt("Output Pins", "Data Size");
 		if (params == null)
 			return null;
 		return new Splitter(x, y, params[0], params[1]);
+	}
+
+	public static Splitter fromJson(JsonObject json) {
+		return new Splitter(json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("outputs").getAsInt(),
+				json.get("size").getAsInt());
+
 	}
 
 }

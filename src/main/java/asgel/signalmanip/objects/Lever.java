@@ -2,6 +2,8 @@ package asgel.signalmanip.objects;
 
 import java.awt.Color;
 
+import com.google.gson.JsonObject;
+
 import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
 import asgel.core.gfx.Renderer;
@@ -13,6 +15,11 @@ public class Lever extends ModelOBJ implements Clickable {
 
 	public Lever(Point p) {
 		super("Lever", "L", (int) p.x, (int) p.y, 32, 32, 1);
+		pins[0] = new Pin(this, Direction.EAST, 1, "OUT", false);
+	}
+
+	public Lever(int x, int y) {
+		super("Lever", "L", x, y, 32, 32, 1);
 		pins[0] = new Pin(this, Direction.EAST, 1, "OUT", false);
 	}
 
@@ -46,6 +53,10 @@ public class Lever extends ModelOBJ implements Clickable {
 			}
 		}
 		renderer.pop();
+	}
+
+	public static Lever fromJson(JsonObject json) {
+		return new Lever(json.get("x").getAsInt(), json.get("y").getAsInt());
 	}
 
 }

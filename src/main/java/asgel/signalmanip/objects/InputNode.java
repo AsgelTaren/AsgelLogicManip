@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.NumberFormatter;
 
+import com.google.gson.JsonObject;
+
 import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
 import asgel.core.model.IParametersRequester;
@@ -75,6 +77,17 @@ public class InputNode extends ModelOBJ {
 		if (params == null)
 			return null;
 		return new InputNode((int) p.x, (int) p.y, params[0], params[1]);
+	}
+
+	@Override
+	public void toJsonInternal(JsonObject json) {
+		json.addProperty("size", pins[0].getSize());
+		json.addProperty("id", id);
+	}
+
+	public static InputNode fromJson(JsonObject json) {
+		return new InputNode(json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("size").getAsInt(),
+				json.get("id").getAsInt());
 	}
 
 }
