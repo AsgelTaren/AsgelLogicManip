@@ -39,8 +39,12 @@ public class Bundle implements BundleLoader {
 				json -> Compressor.fromJson(json));
 
 		// Memory
-		registry.registerObject("Register", "register", "memory", p -> Register.askFor(p, requester),
+		registry.registerObject("register", "Register", "memory", p -> Register.askFor(p, requester),
 				json -> Register.fromJson(json));
+		registry.registerObject("loaded_register", "Loaded Register", "memory",
+				p -> LoadedRegister.askFor(p, requester), json -> LoadedRegister.fromJson(json));
+		registry.registerObject("buffered_register", "Buffered Register", "memory",
+				p -> BufferedRegister.askFor(p, requester), json -> BufferedRegister.fromJson(json));
 	}
 
 }
