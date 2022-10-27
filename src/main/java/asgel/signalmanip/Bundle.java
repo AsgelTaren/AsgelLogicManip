@@ -8,7 +8,17 @@ import asgel.core.bundle.Utils;
 import asgel.core.model.BundleRegistry;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelTab;
-import asgel.signalmanip.objects.*;
+import asgel.signalmanip.objects.BiggerLever;
+import asgel.signalmanip.objects.BufferedRegister;
+import asgel.signalmanip.objects.Compressor;
+import asgel.signalmanip.objects.Decompressor;
+import asgel.signalmanip.objects.InputNode;
+import asgel.signalmanip.objects.Lever;
+import asgel.signalmanip.objects.LoadedRegister;
+import asgel.signalmanip.objects.ModelBox;
+import asgel.signalmanip.objects.OutputNode;
+import asgel.signalmanip.objects.Register;
+import asgel.signalmanip.objects.Splitter;
 
 public class Bundle implements BundleLoader {
 
@@ -45,6 +55,8 @@ public class Bundle implements BundleLoader {
 				p -> LoadedRegister.askFor(p, requester), json -> LoadedRegister.fromJson(json));
 		registry.registerObject("buffered_register", "Buffered Register", "memory",
 				p -> BufferedRegister.askFor(p, requester), json -> BufferedRegister.fromJson(json));
+		registry.registerObject("bigger_lever", "Bigger Lever", "signal_manip", p -> BiggerLever.askFor(p, requester),
+				json -> BiggerLever.fromJson(json));
 	}
 
 }
