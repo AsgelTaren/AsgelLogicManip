@@ -8,11 +8,7 @@ import asgel.core.bundle.Utils;
 import asgel.core.model.BundleRegistry;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelTab;
-import asgel.signalmanip.objects.InputNode;
-import asgel.signalmanip.objects.Lever;
-import asgel.signalmanip.objects.ModelBox;
-import asgel.signalmanip.objects.OutputNode;
-import asgel.signalmanip.objects.Splitter;
+import asgel.signalmanip.objects.*;
 
 public class Bundle implements BundleLoader {
 
@@ -23,6 +19,8 @@ public class Bundle implements BundleLoader {
 				.setIcon(Utils.loadIcon(res.resolveRessource("logo.png"), 16)).setColor(new Color(190, 3, 252)));
 		registry.registerTab(new ModelTab("model_box", "Model Box").setColor(new Color(252, 235, 3))
 				.setIcon(Utils.loadIcon(res.resolveRessource("box.png"), 16)));
+		registry.registerTab(new ModelTab("memory", "Memory").setColor(new Color(252, 3, 61))
+				.setIcon(Utils.loadIcon(res.resolveRessource("memory.png"), 16)));
 
 		// Register objects
 		registry.registerObject("lever", "Lever", "signal_manip", p -> new Lever(p), json -> Lever.fromJson(json));
@@ -35,6 +33,14 @@ public class Bundle implements BundleLoader {
 		registry.registerObject("modelbox", "Model Box", "model_box",
 				p -> ModelBox.askFor(p, requester, res.getGlobalRegistry()),
 				json -> ModelBox.fromJson(json, res.getGlobalRegistry()));
+		registry.registerObject("decompressor", "Decompressor", "signal_manip", p -> Decompressor.askFor(p, requester),
+				json -> Decompressor.fromJson(json));
+		registry.registerObject("compressor", "Compressor", "signal_manip", p -> Compressor.askFor(p, requester),
+				json -> Compressor.fromJson(json));
+
+		// Memory
+		registry.registerObject("Register", "register", "memory", p -> Register.askFor(p, requester),
+				json -> Register.fromJson(json));
 	}
 
 }
