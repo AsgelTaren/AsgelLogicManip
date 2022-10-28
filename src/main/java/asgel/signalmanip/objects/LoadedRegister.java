@@ -11,17 +11,22 @@ import asgel.core.model.Pin;
 public class LoadedRegister extends ModelOBJ {
 
 	protected LoadedRegister(int x, int y, int size) {
-		super("Loaded Register " + size + " bits", "LR" + size + "b", x, y, 48, 64, 4);
+		super("Loaded Register " + size + " bits", "LR" + size + "b", x, y, 48, 64, 5);
 		pins[0] = new Pin(this, Direction.WEST, size, "DATA_IN", true).setIsSensible(false);
-		pins[1] = new Pin(this, Direction.WEST, 1, "LOAD", true);
+		pins[1] = new Pin(this, Direction.NORTH, 1, "LOAD", true).setIsSensible(false);
 		pins[2] = new Pin(this, Direction.SOUTH, 1, "CLK", true);
 		pins[3] = new Pin(this, Direction.EAST, size, "DATA_OUT", false);
+		pins[4] = new Pin(this, Direction.NORTH, 1, "CLEAR", true).setIsSensible(isMoveable);
 	}
 
 	@Override
 	public void update() {
-		if (pins[1].getData()[0] && pins[2].getData()[0]) {
-			pins[3].setData(pins[0].getData());
+		if (pins[1].getData()[0]) {
+			if (pins[4].getData()[0]) {
+				pins[3].clearData();
+			} else if (pins[2].getData()[0]) {
+				pins[3].setData(pins[0].getData());
+			}
 		}
 	}
 

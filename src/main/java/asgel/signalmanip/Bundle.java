@@ -9,6 +9,7 @@ import asgel.core.model.BundleRegistry;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelTab;
 import asgel.signalmanip.objects.BiggerLever;
+import asgel.signalmanip.objects.Buffer;
 import asgel.signalmanip.objects.BufferedRegister;
 import asgel.signalmanip.objects.Compressor;
 import asgel.signalmanip.objects.Decompressor;
@@ -32,10 +33,18 @@ public class Bundle implements BundleLoader {
 		registry.registerTab(new ModelTab("memory", "Memory").setColor(new Color(252, 3, 61))
 				.setIcon(Utils.loadIcon(res.resolveRessource("memory.png"), 16)));
 
-		// Register objects
+		// Basic objects
 		registry.registerObject("lever", "Lever", "signal_manip", p -> new Lever(p), json -> Lever.fromJson(json));
 		registry.registerObject("splitter", "Splitter", "signal_manip",
 				p -> Splitter.askFor((int) p.x, (int) p.y, requester), json -> Splitter.fromJson(json));
+		registry.registerObject("decompressor", "Decompressor", "signal_manip", p -> Decompressor.askFor(p, requester),
+				json -> Decompressor.fromJson(json));
+		registry.registerObject("compressor", "Compressor", "signal_manip", p -> Compressor.askFor(p, requester),
+				json -> Compressor.fromJson(json));
+		registry.registerObject("buffer", "Buffer", "signal_manip", p -> Buffer.askFor(p, requester),
+				json -> Buffer.fromJson(json));
+
+		// Model Box
 		registry.registerObject("inputnode", "Input Node", "model_box", p -> InputNode.askFor(p, requester),
 				json -> InputNode.fromJson(json));
 		registry.registerObject("outputnode", "Output Node", "model_box", p -> OutputNode.askFor(p, requester),
@@ -43,10 +52,6 @@ public class Bundle implements BundleLoader {
 		registry.registerObject("modelbox", "Model Box", "model_box",
 				p -> ModelBox.askFor(p, requester, res.getGlobalRegistry()),
 				json -> ModelBox.fromJson(json, res.getGlobalRegistry()));
-		registry.registerObject("decompressor", "Decompressor", "signal_manip", p -> Decompressor.askFor(p, requester),
-				json -> Decompressor.fromJson(json));
-		registry.registerObject("compressor", "Compressor", "signal_manip", p -> Compressor.askFor(p, requester),
-				json -> Compressor.fromJson(json));
 
 		// Memory
 		registry.registerObject("register", "Register", "memory", p -> Register.askFor(p, requester),

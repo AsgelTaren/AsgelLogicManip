@@ -38,12 +38,12 @@ public class Lever extends ModelOBJ implements Clickable {
 		renderer.push();
 		renderer.translate(x, y);
 		renderer.applyRot(rot, new Point(width >> 1, height >> 1));
-		renderer.fillRoundedRect(0, 0, width, height, 20, Color.GRAY);
+		renderer.fillRoundedRect(0, 0, width, height, 20, pins[0].getData()[0] ? Color.RED : Color.GRAY);
 		if (highOBJ == this) {
 			renderer.drawRoundedRect(0, 0, width, height, 20, Color.GREEN);
 		}
 
-		renderer.drawCenteredString(symbol, width >> 1, height >> 1, Color.BLACK);
+		renderer.drawCenteredString(pins[0].getData()[0] ? "1" : "0", width >> 1, height >> 1, Color.BLACK);
 
 		for (Pin p : pins) {
 			p.render(renderer, highPin, anchor);

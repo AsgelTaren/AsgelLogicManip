@@ -11,16 +11,20 @@ import asgel.core.model.Pin;
 public class Register extends ModelOBJ {
 
 	protected Register(int x, int y, int size) {
-		super("Register " + size + " bits", "R" + size + "b", x, y, 48, 64, 3);
+		super("Register " + size + " bits", "R" + size + "b", x, y, 48, 64, 4);
 		pins[0] = new Pin(this, Direction.WEST, size, "DATA_IN", true).setIsSensible(false);
 		pins[1] = new Pin(this, Direction.SOUTH, 1, "CLK", true);
 		pins[2] = new Pin(this, Direction.EAST, size, "DATA_OUT", false);
+		pins[3] = new Pin(this, Direction.NORTH, 1, "CLEAR", true).setIsSensible(false);
 	}
 
 	@Override
 	public void update() {
 		if (pins[1].getData()[0]) {
-			pins[2].setData(pins[0].getData());
+			if (pins[3].getData()[0]) {
+				pins[2].clearData();
+			} else
+				pins[2].setData(pins[0].getData());
 		}
 	}
 

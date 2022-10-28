@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import asgel.core.app.IApp;
 import asgel.core.gfx.Point;
 import asgel.core.model.GlobalRegistry;
 import asgel.core.model.IParametersRequester;
@@ -21,10 +25,10 @@ public class ModelBox extends ModelOBJ {
 	private ArrayList<InputNode> inputs;
 	private ArrayList<OutputNode> outputs;
 
-	private File f;
+	private File main, sub;
 
 	protected ModelBox(String name, String symbol, int x, int y, int width, int height, Model model,
-			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, File f) {
+			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, File main, File sub) {
 		super(name, symbol, x, y, width, height, inputs.size() + outputs.size());
 		this.model = model;
 		this.inputs = inputs;
@@ -37,7 +41,8 @@ public class ModelBox extends ModelOBJ {
 			pins[out.getID()] = new Pin(this, out.getRotation().getInverse(), out.getPins()[0].getSize(),
 					out.toString(), false);
 		}
-		this.f = f;
+		this.main = main;
+		this.sub = sub;
 	}
 
 	@Override
@@ -54,7 +59,7 @@ public class ModelBox extends ModelOBJ {
 
 	@Override
 	public void toJsonInternal(JsonObject json) {
-		json.addProperty("loc", f.getAbsolutePath());
+		json.addProperty("loc", main.getAbsolutePath());
 	}
 
 	private static ModelBox create(Point p, File f, GlobalRegistry regis) {
@@ -62,8 +67,8 @@ public class ModelBox extends ModelOBJ {
 			return null;
 		try {
 			JsonObject data = JsonParser.parseReader(new FileReader(f)).getAsJsonObject();
-			File modelData = new File(f.getParent() + "/" + data.get("location").getAsString());
-			JsonObject modelJson = JsonParser.parseReader(new FileReader(modelData)).getAsJsonObject();
+			File sub = new File(f.getParent() + "/" + data.get("location").getAsString());
+			JsonObject modelJson = JsonParser.parseReader(new FileReader(sub)).getAsJsonObject();
 			Model m = new Model(modelJson, regis);
 			ArrayList<InputNode> inputs = new ArrayList<InputNode>();
 			ArrayList<OutputNode> outputs = new ArrayList<OutputNode>();
@@ -81,7 +86,7 @@ public class ModelBox extends ModelOBJ {
 			String name = data.get("name").getAsString();
 			String symbol = data.get("symbol").getAsString();
 
-			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, m, inputs, outputs, f);
+			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, m, inputs, outputs, f, sub);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,6 +100,23 @@ public class ModelBox extends ModelOBJ {
 	public static ModelBox fromJson(JsonObject json, GlobalRegistry regis) {
 		return create(new Point(json.get("x").getAsInt(), json.get("y").getAsInt()),
 				new File(json.get("loc").getAsString()), regis);
+	}
+
+	@Override
+	public JMenu getPopupMenu(IApp app) {
+		JMenu res = new JMenu("Model Box");
+		JMenuItem open = new JMenuItem("Open Model");
+		open.addActionListener(e -> {
+			try {
+				Model m = new Model(sub, app.getGlobalRegistry());
+				app.setModel(m, sub);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			;
+		});
+		res.add(open);
+		return res;
 	}
 
 }
