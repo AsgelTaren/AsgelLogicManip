@@ -46,9 +46,9 @@ public class Bundle implements BundleLoader {
 
 		// Model Box
 		registry.registerObject("inputnode", "Input Node", "model_box", p -> InputNode.askFor(p, requester),
-				json -> InputNode.fromJson(json));
+				json -> InputNode.fromJson(json)).setBackground(res.resolveImage("right_arrow.png"));
 		registry.registerObject("outputnode", "Output Node", "model_box", p -> OutputNode.askFor(p, requester),
-				json -> OutputNode.fromJson(json));
+				json -> OutputNode.fromJson(json)).setBackground(res.resolveImage("left_arrow.png"));
 		registry.registerObject("modelbox", "Model Box", "model_box",
 				p -> ModelBox.askFor(p, requester, res.getGlobalRegistry()),
 				json -> ModelBox.fromJson(json, res.getGlobalRegistry()));

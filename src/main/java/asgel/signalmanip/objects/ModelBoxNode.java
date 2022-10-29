@@ -29,31 +29,31 @@ public class ModelBoxNode extends ModelOBJ {
 		this.id = id;
 	}
 
-	@Override
-	public void render(Renderer renderer, ModelOBJ highOBJ, Pin highPin, Pin anchor) {
-		renderer.push();
-		renderer.translate(x, y);
-
-		Point text = pins[0].getRealRotation().getInverse().asVec(60);
-		renderer.drawCenteredString(name, (width >> 1) + (int) text.x, (height >> 1) + (int) text.y, Color.BLACK);
-
-		renderer.applyRot(rot, new Point(width >> 1, height >> 1));
-		renderer.fillOval(0, 0, 48, pins[0].getSize() == 1 && pins[0].getData()[0] ? Color.CYAN : Color.gray);
-		if (highOBJ == this) {
-			renderer.drawOval(0, 0, 48, Color.GREEN);
-		}
-
-		for (Pin p : pins) {
-			p.render(renderer, highPin, anchor);
-
-			if (highOBJ == this || highPin == p) {
-				Point loc = p.getRotation().asVec(35).add(p.getPos());
-				renderer.drawCenteredString(p.toString(), (int) loc.x, (int) loc.y,
-						highPin == p ? Color.red : Color.BLACK);
-			}
-		}
-		renderer.pop();
-	}
+//	@Override
+//	public void render(Renderer renderer, ModelOBJ highOBJ, Pin highPin, Pin anchor) {
+//		renderer.push();
+//		renderer.translate(x, y);
+//
+//		Point text = pins[0].getRealRotation().getInverse().asVec(60);
+//		renderer.drawCenteredString(name, (width >> 1) + (int) text.x, (height >> 1) + (int) text.y, Color.BLACK);
+//
+//		renderer.applyRot(rot, new Point(width >> 1, height >> 1));
+//		renderer.fillOval(0, 0, 48, pins[0].getSize() == 1 && pins[0].getData()[0] ? Color.CYAN : Color.gray);
+//		if (highOBJ == this) {
+//			renderer.drawOval(0, 0, 48, Color.GREEN);
+//		}
+//
+//		for (Pin p : pins) {
+//			p.render(renderer, highPin, anchor);
+//
+//			if (highOBJ == this || highPin == p) {
+//				Point loc = p.getRotation().asVec(35).add(p.getPos());
+//				renderer.drawCenteredString(p.toString(), (int) loc.x, (int) loc.y,
+//						highPin == p ? Color.red : Color.BLACK);
+//			}
+//		}
+//		renderer.pop();
+//	}
 
 	@Override
 	public void update() {
