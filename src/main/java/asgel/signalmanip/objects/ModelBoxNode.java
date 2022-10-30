@@ -1,6 +1,5 @@
 package asgel.signalmanip.objects;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.text.NumberFormat;
@@ -14,8 +13,6 @@ import javax.swing.text.NumberFormatter;
 import com.google.gson.JsonObject;
 
 import asgel.core.gfx.Direction;
-import asgel.core.gfx.Point;
-import asgel.core.gfx.Renderer;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 

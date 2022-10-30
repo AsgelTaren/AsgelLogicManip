@@ -25,10 +25,11 @@ public class ModelBox extends ModelOBJ {
 	private ArrayList<InputNode> inputs;
 	private ArrayList<OutputNode> outputs;
 
-	private File main, sub;
+	private File modelBoxFile, modelFile, workingDir;
 
 	protected ModelBox(String name, String symbol, int x, int y, int width, int height, Model model,
-			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, File main, File sub) {
+			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, File modelBoxFile, File modelFile,
+			File workingDir) {
 		super(name, symbol, x, y, width, height, inputs.size() + outputs.size());
 		this.model = model;
 		this.inputs = inputs;
@@ -41,8 +42,9 @@ public class ModelBox extends ModelOBJ {
 			pins[out.getID()] = new Pin(this, out.getRotation().getInverse(), out.getPins()[0].getSize(),
 					out.toString(), false);
 		}
-		this.main = main;
-		this.sub = sub;
+		this.modelBoxFile = modelBoxFile;
+		this.modelFile = modelFile;
+		this.workingDir = workingDir;
 	}
 
 	@Override
@@ -59,21 +61,21 @@ public class ModelBox extends ModelOBJ {
 
 	@Override
 	public void toJsonInternal(JsonObject json) {
-		json.addProperty("loc", main.getAbsolutePath());
+		json.addProperty("loc", workingDir.toPath().relativize(modelBoxFile.toPath()).toString());
 	}
 
-	private static ModelBox create(Point p, File f, GlobalRegistry regis) {
-		if (f == null)
+	public static ModelBox create(Point p, File modelBoxFile, File workingDir, GlobalRegistry regis) {
+		if (modelBoxFile == null)
 			return null;
 		try {
-			JsonObject data = JsonParser.parseReader(new FileReader(f)).getAsJsonObject();
-			File sub = new File(f.getParent() + "/" + data.get("location").getAsString());
-			JsonObject modelJson = JsonParser.parseReader(new FileReader(sub)).getAsJsonObject();
-			Model m = new Model(modelJson, regis);
+			JsonObject data = JsonParser.parseReader(new FileReader(modelBoxFile)).getAsJsonObject();
+			File modelFile = new File(modelBoxFile.getParent() + "/" + data.get("location").getAsString());
+			JsonObject modelJson = JsonParser.parseReader(new FileReader(modelFile)).getAsJsonObject();
+			Model model = new Model(modelJson, regis);
 			ArrayList<InputNode> inputs = new ArrayList<InputNode>();
 			ArrayList<OutputNode> outputs = new ArrayList<OutputNode>();
 
-			for (ModelOBJ obj : m.getObjects()) {
+			for (ModelOBJ obj : model.getObjects()) {
 				if (obj instanceof InputNode in) {
 					inputs.add(in);
 				}
@@ -86,7 +88,8 @@ public class ModelBox extends ModelOBJ {
 			String name = data.get("name").getAsString();
 			String symbol = data.get("symbol").getAsString();
 
-			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, m, inputs, outputs, f, sub);
+			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, model, inputs, outputs, modelBoxFile,
+					modelFile, workingDir);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,12 +97,15 @@ public class ModelBox extends ModelOBJ {
 	}
 
 	public static ModelBox askFor(Point p, IParametersRequester req, GlobalRegistry regis) {
-		return create(p, req.getFile(new File("./res")), regis);
+		ModelBoxDialog dialog = new ModelBoxDialog(req.getJFrame(), p, req.getWorkingDir(), regis);
+		dialog.setVisible(true);
+		return dialog.getResult();
 	}
 
-	public static ModelBox fromJson(JsonObject json, GlobalRegistry regis) {
+	public static ModelBox fromJson(JsonObject json, IParametersRequester req, GlobalRegistry regis) {
 		return create(new Point(json.get("x").getAsInt(), json.get("y").getAsInt()),
-				new File(json.get("loc").getAsString()), regis);
+				new File(req.getWorkingDir().getAbsolutePath() + "/" + json.get("loc").getAsString()),
+				req.getWorkingDir(), regis);
 	}
 
 	@Override
@@ -108,8 +114,8 @@ public class ModelBox extends ModelOBJ {
 		JMenuItem open = new JMenuItem("Open Model");
 		open.addActionListener(e -> {
 			try {
-				Model m = new Model(sub, app.getGlobalRegistry());
-				app.setModel(m, sub);
+				Model m = new Model(modelFile, app.getGlobalRegistry());
+				app.setModel(m, modelFile);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
