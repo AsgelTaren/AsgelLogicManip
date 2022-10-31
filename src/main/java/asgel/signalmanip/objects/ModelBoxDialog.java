@@ -3,6 +3,8 @@ package asgel.signalmanip.objects;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -89,6 +91,15 @@ public class ModelBoxDialog extends JDialog {
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
+
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				result = null;
+			}
+
+		});
 	}
 
 	private DefaultMutableTreeNode createNode(File file) {
