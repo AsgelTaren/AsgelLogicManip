@@ -14,3 +14,7 @@ src/test/
 .classpath
 .project
 .settings
+
+# Ignore res folder
+res/workingDir/
+res/appdataFolder/bundles/

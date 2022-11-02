@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import asgel.core.app.IApp;
+import asgel.app.App;
 import asgel.core.gfx.Point;
 import asgel.core.model.GlobalRegistry;
 import asgel.core.model.IParametersRequester;
@@ -109,7 +109,7 @@ public class ModelBox extends ModelOBJ {
 	}
 
 	@Override
-	public JMenu getPopupMenu(IApp app) {
+	public JMenu getPopupMenu(App app) {
 		JMenu res = new JMenu("Model Box");
 		JMenuItem open = new JMenuItem("Open Model");
 		open.addActionListener(e -> {

@@ -8,13 +8,37 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
-    api project(":AsgelLogicCore")
+    implementation files("libs/AsgelLogicSimulator-uber.jar")
 }
 
-task copyJar(type: Copy){
+task copyJarForTest(type: Copy){
+	group = "Copy"
+	def jsonFile = file("src/main/resources/bundle.json")
+	def parsed = new groovy.json.JsonSlurper().parseText(jsonFile.text)
+	println "Copied into " + parsed.id + ".jar"
+	from jar
+	into "res/appdataFolder/bundles"
+	rename(rootProject.name + ".jar",parsed.id + ".jar")
+}
+copyJarForTest.dependsOn jar
+
+task copyJarToAppdata(type: Copy){
+	group = "Copy"
+	def jsonFile = file("src/main/resources/bundle.json")
+	def parsed = new groovy.json.JsonSlurper().parseText(jsonFile.text)
+	println "Copied into " + parsed.id + ".jar"
 	from jar
 	into "${System.env.APPDATA}/AsgelLogicSim/bundles"
-	rename("AsgelLogicSignalManip.jar","asgellogicsignalmanip.jar")
+	rename(rootProject.name + ".jar",parsed.id + ".jar")
 }
 
-jar.finalizedBy copyJar
+copyJarToAppdata.dependsOn jar
+
+task runApp(type:Exec){
+	group = "Testing"
+	environment "ASGEL_CONFIG_FILE","./res/appdataFolder/config.json"
+	environment "ASGEL_BUNDLE_DIR","./res/appdataFolder/bundles"
+	workingDir './'
+	commandLine 'java','-jar','libs/AsgelLogicSimulator-uber.jar'
+}
+runApp.dependsOn copyJarForTest
