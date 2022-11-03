@@ -8,6 +8,10 @@ import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class LoadedRegister extends ModelOBJ {
 
 	protected LoadedRegister(int x, int y, int size) {

@@ -11,6 +11,10 @@ import asgel.core.model.Clickable;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class Lever extends ModelOBJ implements Clickable {
 
 	public Lever(Point p) {

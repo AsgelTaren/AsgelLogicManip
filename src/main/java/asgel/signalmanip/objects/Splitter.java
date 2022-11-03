@@ -7,6 +7,10 @@ import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class Splitter extends ModelOBJ {
 
 	protected Splitter(int x, int y, int outputs, int size) {

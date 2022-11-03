@@ -16,6 +16,10 @@ import asgel.core.gfx.Direction;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class ModelBoxNode extends ModelOBJ {
 
 	protected int id;

@@ -8,6 +8,10 @@ import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class Compressor extends ModelOBJ {
 
 	protected Compressor(int x, int y, int size) {

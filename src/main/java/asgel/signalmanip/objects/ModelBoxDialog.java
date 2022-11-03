@@ -19,6 +19,10 @@ import javax.swing.tree.TreeSelectionModel;
 import asgel.core.gfx.Point;
 import asgel.core.model.GlobalRegistry;
 
+/**
+ * @author Florent Guille
+ **/
+
 @SuppressWarnings("serial")
 public class ModelBoxDialog extends JDialog {
 

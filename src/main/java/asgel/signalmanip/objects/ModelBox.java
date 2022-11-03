@@ -18,6 +18,10 @@ import asgel.core.model.Model;
 import asgel.core.model.ModelOBJ;
 import asgel.core.model.Pin;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class ModelBox extends ModelOBJ {
 
 	private Model model;

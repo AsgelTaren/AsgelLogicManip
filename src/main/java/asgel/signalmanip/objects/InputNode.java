@@ -7,6 +7,10 @@ import asgel.core.gfx.Point;
 import asgel.core.model.Clickable;
 import asgel.core.model.IParametersRequester;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class InputNode extends ModelBoxNode implements Clickable {
 
 	protected InputNode(int x, int y, int size, int id) {

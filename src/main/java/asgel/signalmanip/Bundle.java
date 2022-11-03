@@ -21,6 +21,10 @@ import asgel.signalmanip.objects.OutputNode;
 import asgel.signalmanip.objects.Register;
 import asgel.signalmanip.objects.Splitter;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class Bundle implements BundleLoader {
 
 	@Override

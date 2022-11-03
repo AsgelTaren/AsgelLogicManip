@@ -6,6 +6,10 @@ import asgel.core.gfx.Direction;
 import asgel.core.gfx.Point;
 import asgel.core.model.IParametersRequester;
 
+/**
+ * @author Florent Guille
+ **/
+
 public class OutputNode extends ModelBoxNode {
 
 	protected OutputNode(int x, int y, int size, int id) {
