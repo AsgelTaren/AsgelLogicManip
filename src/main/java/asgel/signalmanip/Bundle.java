@@ -2,9 +2,9 @@ package asgel.signalmanip;
 
 import java.awt.Color;
 
+import asgel.app.Utils;
 import asgel.core.bundle.BundleLoader;
 import asgel.core.bundle.RessourceManager;
-import asgel.core.bundle.Utils;
 import asgel.core.model.BundleRegistry;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelTab;
