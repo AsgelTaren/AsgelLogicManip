@@ -100,10 +100,11 @@ public class ModelBox extends ModelOBJ {
 		return null;
 	}
 
-	public static ModelBox askFor(Point p, IParametersRequester req, GlobalRegistry regis) {
-		ModelBoxDialog dialog = new ModelBoxDialog(req.getJFrame(), p, req.getWorkingDir(), regis);
-		dialog.setVisible(true);
-		return dialog.getResult();
+	public static ModelOBJ askFor(Point p, IParametersRequester req, GlobalRegistry regis) {
+		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(), "Model Box Selection",
+				f -> f.getName().endsWith(".asglogmodbox"));
+		looker.setVisible(true);
+		return looker.getResult() == null ? null : ModelBox.create(p, looker.getResult(), req.getWorkingDir(), regis);
 	}
 
 	public static ModelBox fromJson(JsonObject json, IParametersRequester req, GlobalRegistry regis) {

@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileFilter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,29 +17,22 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import asgel.core.gfx.Point;
-import asgel.core.model.GlobalRegistry;
-
 /**
  * @author Florent Guille
  **/
 
 @SuppressWarnings("serial")
-public class ModelBoxDialog extends JDialog {
+public class FileLookerDialog extends JDialog {
 
 	// Result file
 	private File result;
 
 	// Data
-	private Point p;
-	private File workingDir;
-	private GlobalRegistry regis;
+	private FileFilter filter;
 
-	public ModelBoxDialog(JFrame frame, Point p, File workingDir, GlobalRegistry regis) {
-		super(frame, "Model Box Selection", true);
-		this.p = p;
-		this.workingDir = workingDir;
-		this.regis = regis;
+	public FileLookerDialog(JFrame frame, File workingDir, String name, FileFilter filter) {
+		super(frame, name, true);
+		this.filter = filter;
 
 		// Creating the panel
 		JPanel panel = new JPanel();
@@ -52,6 +46,7 @@ public class ModelBoxDialog extends JDialog {
 		tree.setPreferredSize(new Dimension(400, 600));
 		tree.setRootVisible(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.setCellRenderer(new FileLookerTreeRenderer());
 
 		gbc.gridwidth = 2;
 		panel.add(new JScrollPane(tree), gbc);
@@ -81,7 +76,7 @@ public class ModelBoxDialog extends JDialog {
 			DefaultMutableTreeNode sel = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 			result = null;
 			if (sel.getUserObject() instanceof FileHolder holder) {
-				if (holder.f.getName().endsWith(".asglogmodbox"))
+				if (filter.accept(holder.f))
 					this.result = holder.f;
 			}
 			load.setEnabled(result != null);
@@ -108,7 +103,7 @@ public class ModelBoxDialog extends JDialog {
 
 	private DefaultMutableTreeNode createNode(File file) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode(new FileHolder(file));
-		for (File child : file.listFiles(f -> f.getName().endsWith(".asglogmodbox"))) {
+		for (File child : file.listFiles(filter)) {
 			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(new FileHolder(child));
 			node.add(childNode);
 		}
@@ -119,14 +114,11 @@ public class ModelBoxDialog extends JDialog {
 		return node;
 	}
 
-	public ModelBox getResult() {
-		System.out.println("Result: " + result);
-		if (result == null)
-			return null;
-		return ModelBox.create(p, result, workingDir, regis);
+	public File getResult() {
+		return result;
 	}
 
-	private class FileHolder {
+	public class FileHolder {
 
 		File f;
 

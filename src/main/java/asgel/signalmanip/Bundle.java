@@ -18,6 +18,8 @@ import asgel.signalmanip.objects.Lever;
 import asgel.signalmanip.objects.LoadedRegister;
 import asgel.signalmanip.objects.ModelBox;
 import asgel.signalmanip.objects.OutputNode;
+import asgel.signalmanip.objects.RAM;
+import asgel.signalmanip.objects.ROM;
 import asgel.signalmanip.objects.Register;
 import asgel.signalmanip.objects.Splitter;
 
@@ -66,6 +68,9 @@ public class Bundle implements BundleLoader {
 				p -> BufferedRegister.askFor(p, requester), json -> BufferedRegister.fromJson(json));
 		registry.registerObject("bigger_lever", "Bigger Lever", "signal_manip", p -> BiggerLever.askFor(p, requester),
 				json -> BiggerLever.fromJson(json));
+		registry.registerObject("ram", "RAM", "memory", p -> RAM.askFor(p, requester), json -> RAM.fromJson(json));
+		registry.registerObject("rom", "ROM", "memory", p -> ROM.askFor(p, requester),
+				json -> ROM.fromJson(json, requester));
 	}
 
 }
