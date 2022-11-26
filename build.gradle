@@ -13,23 +13,23 @@ dependencies {
 
 task copyJarForTest(type: Copy){
 	group = "Copy"
-	def jsonFile = file("src/main/resources/bundle.json")
+	def jsonFile = file("src/main/resources/bundles.json")
 	def parsed = new groovy.json.JsonSlurper().parseText(jsonFile.text)
-	println "Copied into " + parsed.id + ".jar"
+	println "Copied into " + parsed.filename + ".jar"
 	from jar
 	into "res/appdataFolder/bundles"
-	rename(rootProject.name + ".jar",parsed.id + ".jar")
+	rename(rootProject.name + ".jar",parsed.filename + ".jar")
 }
 copyJarForTest.dependsOn jar
 
 task copyJarToAppdata(type: Copy){
 	group = "Copy"
-	def jsonFile = file("src/main/resources/bundle.json")
+	def jsonFile = file("src/main/resources/bundles.json")
 	def parsed = new groovy.json.JsonSlurper().parseText(jsonFile.text)
-	println "Copied into " + parsed.id + ".jar"
+	println "Copied into " + parsed.filename + ".jar"
 	from jar
 	into "${System.env.APPDATA}/AsgelLogicSim/bundles"
-	rename(rootProject.name + ".jar",parsed.id + ".jar")
+	rename(rootProject.name + ".jar",parsed.filename + ".jar")
 }
 
 copyJarToAppdata.dependsOn jar

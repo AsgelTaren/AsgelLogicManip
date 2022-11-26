@@ -1,11 +1,10 @@
 package asgel.signalmanip;
 
 import java.awt.Color;
+import java.io.File;
 
 import asgel.app.Utils;
-import asgel.core.bundle.BundleLoader;
-import asgel.core.bundle.RessourceManager;
-import asgel.core.model.BundleRegistry;
+import asgel.core.model.GlobalRegistry;
 import asgel.core.model.IParametersRequester;
 import asgel.core.model.ModelTab;
 import asgel.signalmanip.objects.BiggerLever;
@@ -27,17 +26,21 @@ import asgel.signalmanip.objects.Splitter;
  * @author Florent Guille
  **/
 
-public class Bundle implements BundleLoader {
+public class Bundle extends asgel.core.bundle.Bundle {
+
+	public Bundle(File f, String id, GlobalRegistry global, ClassLoader loader, IParametersRequester requester) {
+		super(f, id, global, loader, requester);
+	}
 
 	@Override
-	public void loadBundle(BundleRegistry registry, RessourceManager res, IParametersRequester requester) {
+	public void onLoad() {
 		// Regsiter tabs
 		registry.registerTab(new ModelTab("signal_manip", "Signal Manip")
-				.setIcon(Utils.loadIcon(res.resolveRessource("logo.png"), 16)).setColor(new Color(190, 3, 252)));
+				.setIcon(Utils.loadIcon(resolveBundleResource("logo.png"), 16)).setColor(new Color(190, 3, 252)));
 		registry.registerTab(new ModelTab("model_box", "Model Box").setColor(new Color(252, 235, 3))
-				.setIcon(Utils.loadIcon(res.resolveRessource("box.png"), 16)));
+				.setIcon(Utils.loadIcon(resolveBundleResource("box.png"), 16)));
 		registry.registerTab(new ModelTab("memory", "Memory").setColor(new Color(252, 3, 61))
-				.setIcon(Utils.loadIcon(res.resolveRessource("memory.png"), 16)));
+				.setIcon(Utils.loadIcon(resolveBundleResource("memory.png"), 16)));
 
 		// Basic objects
 		registry.registerObject("lever", "Lever", "signal_manip", p -> new Lever(p), json -> Lever.fromJson(json));
@@ -52,12 +55,11 @@ public class Bundle implements BundleLoader {
 
 		// Model Box
 		registry.registerObject("inputnode", "Input Node", "model_box", p -> InputNode.askFor(p, requester),
-				json -> InputNode.fromJson(json)).setBackground(res.resolveImage("right_arrow.png"));
+				json -> InputNode.fromJson(json)).setBackground(resolveBundleImage("right_arrow.png"));
 		registry.registerObject("outputnode", "Output Node", "model_box", p -> OutputNode.askFor(p, requester),
-				json -> OutputNode.fromJson(json)).setBackground(res.resolveImage("left_arrow.png"));
-		registry.registerObject("modelbox", "Model Box", "model_box",
-				p -> ModelBox.askFor(p, requester, res.getGlobalRegistry()),
-				json -> ModelBox.fromJson(json, requester, res.getGlobalRegistry()));
+				json -> OutputNode.fromJson(json)).setBackground(resolveBundleImage("left_arrow.png"));
+		registry.registerObject("modelbox", "Model Box", "model_box", p -> ModelBox.askFor(p, requester, global),
+				json -> ModelBox.fromJson(json, requester, global));
 
 		// Memory
 		registry.registerObject("register", "Register", "memory", p -> Register.askFor(p, requester),
