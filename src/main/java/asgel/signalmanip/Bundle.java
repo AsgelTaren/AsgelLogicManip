@@ -74,7 +74,7 @@ public class Bundle extends asgel.core.bundle.Bundle {
 				json -> BiggerLever.fromJson(json.json));
 		registry.registerObject("ram", "memory", p -> RAM.askFor(p, requester), json -> RAM.fromJson(json.json));
 		registry.registerObject("rom", "memory", p -> ROM.askFor(p, requester),
-				json -> ROM.fromJson(json.json, requester));
+				json -> ROM.fromJson(json.json, requester, json.model));
 	}
 
 }
