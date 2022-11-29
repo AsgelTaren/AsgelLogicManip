@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import asgel.app.App;
+import asgel.app.FileLookerDialog;
+import asgel.app.Utils;
 import asgel.core.gfx.Point;
 import asgel.core.model.GlobalRegistry;
 import asgel.core.model.IParametersRequester;
@@ -29,11 +32,12 @@ public class ModelBox extends ModelOBJ {
 	private ArrayList<InputNode> inputs;
 	private ArrayList<OutputNode> outputs;
 
-	private File modelBoxFile, modelFile, workingDir;
+	private String modelURL;
+
+	private File modelFile;
 
 	protected ModelBox(String name, String symbol, int x, int y, int width, int height, Model model,
-			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, File modelBoxFile, File modelFile,
-			File workingDir) {
+			ArrayList<InputNode> inputs, ArrayList<OutputNode> outputs, String modelURL, File modelFile) {
 		super(name, symbol, x, y, width, height, inputs.size() + outputs.size());
 		this.model = model;
 		this.inputs = inputs;
@@ -46,9 +50,8 @@ public class ModelBox extends ModelOBJ {
 			pins[out.getID()] = new Pin(this, out.getRotation().getInverse(), out.getPins()[0].getSize(),
 					out.toString(), false);
 		}
-		this.modelBoxFile = modelBoxFile;
+		this.modelURL = modelURL;
 		this.modelFile = modelFile;
-		this.workingDir = workingDir;
 	}
 
 	@Override
@@ -65,17 +68,18 @@ public class ModelBox extends ModelOBJ {
 
 	@Override
 	public void toJsonInternal(JsonObject json) {
-		json.addProperty("loc", workingDir.toPath().relativize(modelBoxFile.toPath()).toString());
+		json.addProperty("loc", modelURL);
 	}
 
-	public static ModelBox create(Point p, File modelBoxFile, File workingDir, GlobalRegistry regis) {
-		if (modelBoxFile == null)
-			return null;
+	public static ModelBox create(Point p, String modelBoxURL, IParametersRequester requester, GlobalRegistry regis,
+			Model origin) {
 		try {
+			File modelBoxFile = Utils.resolvePath(origin.getFile(), requester.getWorkingDir(), modelBoxURL);
 			JsonObject data = JsonParser.parseReader(new FileReader(modelBoxFile)).getAsJsonObject();
-			File modelFile = new File(modelBoxFile.getParent() + "/" + data.get("location").getAsString());
+			File modelFile = Utils.resolvePath(modelBoxFile, requester.getWorkingDir(),
+					data.get("location").getAsString());
 			JsonObject modelJson = JsonParser.parseReader(new FileReader(modelFile)).getAsJsonObject();
-			Model model = new Model(modelJson, regis);
+			Model model = new Model(modelJson, regis, modelFile);
 			ArrayList<InputNode> inputs = new ArrayList<InputNode>();
 			ArrayList<OutputNode> outputs = new ArrayList<OutputNode>();
 
@@ -92,8 +96,8 @@ public class ModelBox extends ModelOBJ {
 			String name = data.get("name").getAsString();
 			String symbol = data.get("symbol").getAsString();
 
-			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, model, inputs, outputs, modelBoxFile,
-					modelFile, workingDir);
+			return new ModelBox(name, symbol, (int) p.x, (int) p.y, width, height, model, inputs, outputs, modelBoxURL,
+					modelFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,16 +105,24 @@ public class ModelBox extends ModelOBJ {
 	}
 
 	public static ModelOBJ askFor(Point p, IParametersRequester req, GlobalRegistry regis) {
+		if (req.getWorkingFile() == null) {
+			JOptionPane.showMessageDialog(req.getJFrame(), "You need to be in a valid file to use this model object!");
+			return null;
+		}
 		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(), "Model Box Selection",
 				f -> f.getName().endsWith(".asglogmodbox"));
 		looker.setVisible(true);
-		return looker.getResult() == null ? null : ModelBox.create(p, looker.getResult(), req.getWorkingDir(), regis);
+		if (looker.getResult() == null)
+			return null;
+		String modelBoxURL = Utils.askForRelativity(req.getWorkingFile().getParentFile().toPath(),
+				looker.getResult().toPath(), req.getWorkingDir().toPath(), req.getJFrame());
+		return looker.getResult() == null ? null
+				: ModelBox.create(p, modelBoxURL, req, regis, req.getApp().getSelectedModelHolder().getModel());
 	}
 
-	public static ModelBox fromJson(JsonObject json, IParametersRequester req, GlobalRegistry regis) {
-		return create(new Point(json.get("x").getAsInt(), json.get("y").getAsInt()),
-				new File(req.getWorkingDir().getAbsolutePath() + "/" + json.get("loc").getAsString()),
-				req.getWorkingDir(), regis);
+	public static ModelBox fromJson(JsonObject json, IParametersRequester req, GlobalRegistry regis, Model model) {
+		return create(new Point(json.get("x").getAsInt(), json.get("y").getAsInt()), json.get("loc").getAsString(), req,
+				regis, model);
 	}
 
 	@Override

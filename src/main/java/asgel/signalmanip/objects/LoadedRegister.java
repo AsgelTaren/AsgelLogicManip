@@ -20,7 +20,7 @@ public class LoadedRegister extends ModelOBJ {
 		pins[1] = new Pin(this, Direction.NORTH, 1, "LOAD", true).setIsSensible(false);
 		pins[2] = new Pin(this, Direction.SOUTH, 1, "CLK", true);
 		pins[3] = new Pin(this, Direction.EAST, size, "DATA_OUT", false);
-		pins[4] = new Pin(this, Direction.NORTH, 1, "CLEAR", true).setIsSensible(isMoveable);
+		pins[4] = new Pin(this, Direction.NORTH, 1, "CLEAR", true).setIsSensible(false);
 	}
 
 	@Override
