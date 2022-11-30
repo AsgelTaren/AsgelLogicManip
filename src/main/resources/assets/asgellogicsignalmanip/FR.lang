@@ -1,5 +1,26 @@
 {
 "tab.signal_manip":"Signaux",
 "tab.memory":"Mémorisation",
-"tab.model_box":"Boîte Modèle"
+"tab.model_box":"Boîte Modèle",
+"object.bigger_lever":"Levier +",
+"object.lever":"Levier",
+"object.counter":"Compteur",
+"object.splitter":"Séparateur",
+"object.buffer":"Tampon",
+"object.decompressor":"Décompresseur",
+"object.compressor":"Compresseur",
+"object.loaded_register":"Registre à charge",
+"object.rom":"ROM",
+"object.buffered_register":"Registre à tampon",
+"object.register":"Registre",
+"object.ram":"RAM",
+"object.inputnode":"Point d'entrée",
+"object.modelbox":"Boîte Modèle",
+"object.outputnode":"Point de sortie",
+"modelbox.selection":"Sélection de la boîte modèle",
+"modelbox.openmodel":"Ouvrir le modèle associé",
+"modelbox.model":"Modèle",
+"rom.selection":"Sélection des données de la ROM",
+"rom.setdata":"Sélectionner des données",
+"invalidfilemessage":"Vous devez vous trouver dans un fichier valide pour utiliser ce composant!"
 }

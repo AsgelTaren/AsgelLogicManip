@@ -106,10 +106,14 @@ public class ModelBox extends ModelOBJ {
 
 	public static ModelOBJ askFor(Point p, IParametersRequester req, GlobalRegistry regis) {
 		if (req.getWorkingFile() == null) {
-			JOptionPane.showMessageDialog(req.getJFrame(), "You need to be in a valid file to use this model object!");
+			JOptionPane.showMessageDialog(req.getJFrame(),
+					regis.getBundles().get("asgellogicsignalmanip").getBundleRegistry().ATLAS
+							.getValue("invalidfilemessage"));
 			return null;
 		}
-		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(), "Model Box Selection",
+		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(),
+				regis.getBundles().get("asgellogicsignalmanip").getBundleRegistry().ATLAS
+						.getValue("modelbox.selection"),
 				f -> f.getName().endsWith(".asglogmodbox"));
 		looker.setVisible(true);
 		if (looker.getResult() == null)
@@ -127,8 +131,8 @@ public class ModelBox extends ModelOBJ {
 
 	@Override
 	public JMenu getPopupMenu(App app) {
-		JMenu res = new JMenu("Model Box");
-		JMenuItem open = new JMenuItem("Open Model");
+		JMenu res = new JMenu(this.getEntry().getRegistry().ATLAS.getValue("modelbox.model"));
+		JMenuItem open = new JMenuItem(this.getEntry().getRegistry().ATLAS.getValue("modelbox.openmodel"));
 		open.addActionListener(e -> {
 			try {
 				Model m = new Model(modelFile, app.getGlobalRegistry());

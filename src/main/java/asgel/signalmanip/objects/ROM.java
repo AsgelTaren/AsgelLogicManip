@@ -82,8 +82,8 @@ public class ROM extends ModelOBJ {
 	}
 
 	public static ModelOBJ askFor(Point p, IParametersRequester req) {
-		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(), "ROM Data Selection",
-				f -> f.getName().endsWith(".asglogdata"));
+		FileLookerDialog looker = new FileLookerDialog(req.getJFrame(), req.getWorkingDir(),
+				req.getApp().getText("rom.selection"), f -> f.getName().endsWith(".asglogdata"));
 		looker.setVisible(true);
 		if (looker.getResult() == null)
 			return null;
@@ -105,11 +105,11 @@ public class ROM extends ModelOBJ {
 	public JMenu getPopupMenu(App app) {
 		JMenu res = new JMenu("ROM");
 
-		JMenuItem setData = new JMenuItem("Set Data");
+		JMenuItem setData = new JMenuItem(app.getText("rom.setdata"));
 		setData.addActionListener(e -> {
 
-			FileLookerDialog looker = new FileLookerDialog(app.getJFrame(), app.getWorkingDir(), "ROM Data Selection",
-					f -> f.getName().endsWith(".asglogdata"));
+			FileLookerDialog looker = new FileLookerDialog(app.getJFrame(), app.getWorkingDir(),
+					app.getText("rom.selection"), f -> f.getName().endsWith(".asglogdata"));
 			looker.setVisible(true);
 			if (looker.getResult() == null)
 				return;
