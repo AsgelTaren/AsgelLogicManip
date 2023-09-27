@@ -32,7 +32,7 @@ public class BinaryCounter extends ModelOBJ implements Clickable {
 		for (int i = 0; i < pins[0].getSize(); i++) {
 			pins[0].getData()[i] = ((data >> i) & 1) == 1;
 		}
-		this.symbol = "" + data;
+		this.symbol = Integer.toHexString(data);
 	}
 
 	@Override
@@ -51,5 +51,13 @@ public class BinaryCounter extends ModelOBJ implements Clickable {
 	public static BinaryCounter fromJson(JsonObject json) {
 		return new BinaryCounter(json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("size").getAsInt(),
 				json.get("data").getAsInt());
+	}
+
+	@Override
+	public void reset() {
+		this.data = 0;
+		pins[0].clearData();
+		this.symbol = "0";
+
 	}
 }

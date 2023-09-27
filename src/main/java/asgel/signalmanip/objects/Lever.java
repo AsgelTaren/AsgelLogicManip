@@ -65,4 +65,10 @@ public class Lever extends ModelOBJ implements Clickable {
 		return new Lever(json.get("x").getAsInt(), json.get("y").getAsInt());
 	}
 
+	@Override
+	public void reset() {
+		pins[0].getData()[0] = false;
+
+	}
+
 }

@@ -25,10 +25,10 @@ public class LoadedRegister extends ModelOBJ {
 
 	@Override
 	public void update() {
-		if (pins[1].getData()[0]) {
+		if (pins[2].getData()[0]) {
 			if (pins[4].getData()[0]) {
 				pins[3].clearData();
-			} else if (pins[2].getData()[0]) {
+			} else if (pins[1].getData()[0]) {
 				pins[3].setData(pins[0].getData());
 			}
 		}

@@ -117,4 +117,10 @@ public class BiggerLever extends ModelOBJ implements Clickable {
 		return result;
 	}
 
+	@Override
+	public void reset() {
+		data = new boolean[data.length][data[0].length];
+
+	}
+
 }

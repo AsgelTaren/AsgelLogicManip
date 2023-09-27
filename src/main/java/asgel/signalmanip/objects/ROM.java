@@ -46,18 +46,24 @@ public class ROM extends ModelOBJ {
 		Logger log = Logger.INSTANCE.derivateLogger("[ROM]");
 		log.log("Started loading rom data from " + dataURL);
 		File f = Utils.resolvePath(model.getFile(), workingDir, dataURL);
-		String[] data = Files.readString(f.toPath()).replace(" ", "").split(";");
+		String[] data = Files.readString(f.toPath()).replace(" ", "").split(";[\n|\\s]*");
 		this.data = new boolean[1 << pins[1].getSize()][pins[0].getSize()];
 		for (String raw : data) {
 			log.log("Adding instruction: " + raw);
 			String[] split = raw.split("->");
+			for (int i = 0; i < split.length; i++) {
+				split[i] = split[i].replace("\\s", "");
+			}
 			int addr = 0;
+			log.log("Input address: " + split[0]);
 			for (int i = 0; i < split[0].length(); i++) {
 				addr |= (split[0].charAt(i) == '1' ? 1 : 0) << i;
+				log.log("Address at " + i + ": " + (1 << i));
 			}
 			for (int i = 0; i < split[1].length(); i++) {
 				this.data[addr][i] = split[1].charAt(i) == '1';
 			}
+			log.log("Address: " + addr);
 		}
 	}
 
